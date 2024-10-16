@@ -1,0 +1,24 @@
+---
+- hosts: servers
+  become: true
+  become_user: root
+  tasks:
+    - name: Update apt repo and cache on Ubuntu/Debian servers
+      apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+
+    - name: Upgrade packages on servers
+      apt: upgrade=dist force_apt_get=yes
+
+    - name: Check if reboot is required for servers
+      register: reboot_required_file
+      stat: path=/var/run/reboot-required
+
+    - name: Reboot server if there was a kernel update
+      reboot:
+        msg: "Rebooting server because kernel was updated"
+        connect_timeout: 5
+        reboot_timeout: 300
+        pre_reboot_delay: 0
+        post_reboot_delay: 30
+        test_command: uptime
+      when: reboot_required_file.stat.exists
