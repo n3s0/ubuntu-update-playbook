@@ -4,7 +4,7 @@
 ## Summary
 ---
 
-Simple Ansible script for updating Ubuntu Servers. But, this will probably work
+Simple Ansible playbook for updating Ubuntu Servers. But, this will probably work
 on Ubuntu Desktop as well.
 
 The objective of this playbook is to have the capability to update multiple
